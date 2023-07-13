@@ -1,0 +1,11 @@
+package com.project.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.project.mapper.NoticeMapper;
+
+public class NoticeServiceImpl implements NoticeService{
+	
+	@Autowired
+	private NoticeMapper mapper;
+}

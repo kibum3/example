@@ -1,0 +1,48 @@
+package com.project.config;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter{
+	// 데이터 소스
+	@Autowired
+	DataSource dataSource;
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception{
+		// CustomLoginSuccessHandler를 로그인 성공 처리자로 지정
+		http.formLogin()
+		.loginPage("/auth/login")
+		.loginProcessingUrl("/login")
+		.successHandler(createAuthenticationSuccessHandler());
+		
+		// CustomLoginSuccessHandler를 접근 거부자로 지정
+		 http.exceptionHandling()
+		 .accessDeniedHandler(createAccessDeniedHandler());
+		 // 데이터 소스를 지정하고 테이블을 이용해서 기존 로그인 정보를 기록
+		 // 쿠키의 유효시간(24시간)을 지정
+		 http.rememberMe()
+		 .key("zeus")
+		 .totkenRepository(createJDBCRepository())
+		 .tokenValiditySeconds(60*60*24);
+	}
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+		auth.userDetailsService(createUserDetailsService())
+		.passwordEncoder(createPasswordEncoder());
+		
+	}
+	@Bean
+	public PasswordEncoder createPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+}

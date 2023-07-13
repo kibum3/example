@@ -1,0 +1,42 @@
+package com.project.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.project.domain.Pds;
+import com.project.service.PdsService;
+
+@Controller
+@RequestMapping("/pds")
+public class PdsController {
+
+	@Autowired
+	private PdsService pdsService;
+	
+	@Value("${upload.path}")
+	private String uploadPath;
+	
+	// 목록 화면
+	@RequestMapping(value = "/list", method=RequestMethod.GET)
+	public void list(Model model) throws Exception{
+		List<Pds> itemList = this.pdsService.list();
+		
+		model.addAttribute("itemList",itemList);
+	}
+	
+	// 등록 화면
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String registerForm(Model model) {
+		model.addAttribute(new Pds());
+		
+		return "pds/register";	
+	}
+}

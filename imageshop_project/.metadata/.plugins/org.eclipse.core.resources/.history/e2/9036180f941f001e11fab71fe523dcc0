@@ -1,0 +1,16 @@
+package com.project.mapper;
+
+import java.util.List;
+
+import com.project.domain.Pds;
+
+public interface PdsMapper {
+	
+	public List<Pds> list() throws Exception;
+	
+	public void create(Pds item) throws Exception;
+	
+	public List<String> getAttach(Integer itemId) throws Exception;
+	
+	public void addAttach(String fullName) throws Exception;
+}

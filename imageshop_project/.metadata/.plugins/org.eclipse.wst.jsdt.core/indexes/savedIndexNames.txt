@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\imageshop_project\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+1726886659.index
+1032041096.index
+2973413863.index
+3374419686.index
+3560579107.index
+1214558251.index
