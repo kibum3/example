@@ -1,9 +1,0 @@
-package com.project.service;
-
-import com.project.domain.Board;
-
-public interface BoardService {
-	// 게시글 등록 처리
-	public void register(Board board) throws Exception;
-
-}
